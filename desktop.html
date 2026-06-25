@@ -50,7 +50,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-title{font-family:"Unbounded",sans-serif;font-size:clamp(2.6rem,7vw,5.5rem);font-weight:700;color:#fff;line-height:1.05;margin-bottom:1.5rem;letter-spacing:-.02em}
 .hero-title .hl-green{color:#5de8a8}
 .hero-title .hl-blue{color:#7dd9f8}
-.hero-sub{font-size:1.1rem;color:rgba(255,255,255,.72);max-width:540px;margin:0 auto 2.5rem;line-height:1.75;font-weight:300}
+.hero-sub{font-size:1.1rem;color:rgba(255,255,255,.72);max-width:700px;margin:0 auto 2.5rem;line-height:1.75;font-weight:300}
 .hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
 .btn-primary{background:#fff;color:var(--green-dark);border:none;padding:15px 34px;border-radius:40px;font-size:15px;font-family:"Inter",sans-serif;font-weight:700;cursor:pointer;transition:all .2s}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.22)}
@@ -792,6 +792,71 @@ letter-spacing:0!important;
 }
 </style>
 
+
+<style id="requested-updates">
+.stamps-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:16px!important;justify-items:center!important;max-width:900px;margin:0 auto;}
+.budget-detail{display:none;}
+.budget-detail-wrapper{margin-top:12px;}
+.budget-detail.open{display:block;}
+.budget-detail-toggle{cursor:pointer;margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.12);font-weight:600;}
+@media(max-width:768px){.stamps-grid{grid-template-columns:repeat(3,1fr)!important;}}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+document.querySelectorAll('.budget-detail').forEach(el=>{
+const btn=document.createElement('div');
+btn.className='budget-detail-toggle';
+btn.innerHTML='Показать детальный расчёт <i class="ti ti-chevron-down"></i>';
+el.parentNode.insertBefore(btn,el);
+btn.onclick=()=>{
+el.classList.toggle('open');
+btn.textContent=el.classList.contains('open')?'Скрыть детальный расчёт':'Показать детальный расчёт';
+};
+});
+});
+</script>
+
+
+<style id="tour-photo-covers">
+.ready-routes .ready-route:nth-child(1) .ready-route-header,
+.ready-routes .ready-route:nth-child(2) .ready-route-header,
+.ready-routes .ready-route:nth-child(3) .ready-route-header,
+.ready-routes .ready-route:nth-child(4) .ready-route-header,
+.ready-routes .ready-route:nth-child(5) .ready-route-header{
+    position:relative;
+    min-height:190px;
+    background-size:cover!important;
+    background-position:center!important;
+    overflow:hidden;
+}
+.ready-routes .ready-route .ready-route-header::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.42);
+}
+.ready-routes .ready-route .ready-route-header>*{
+    position:relative;
+    z-index:2;
+}
+
+.ready-routes .ready-route:nth-child(1) .ready-route-header{
+background-image:url('https://35photo.pro/photos_main/195/975994.jpg')!important;
+}
+.ready-routes .ready-route:nth-child(2) .ready-route-header{
+background-image:url('https://static.tildacdn.com/tild6363-3132-4334-a639-383538343765/1.jpg')!important;
+}
+.ready-routes .ready-route:nth-child(3) .ready-route-header{
+background-image:url('https://storage.yandexcloud.net/storage.yasno.media/nat-geo/images/2024/8/27/3caa793c1d9e4984b7cfbe157761654f.max-1200x800.jpg')!important;
+}
+.ready-routes .ready-route:nth-child(4) .ready-route-header{
+background-image:url('https://www.onetwotrip.com/ru/blog/wp-content/uploads/2022/10/shoriya.jpg')!important;
+}
+.ready-routes .ready-route:nth-child(5) .ready-route-header{
+background-image:url('https://www.altzapovednik.ru/AltZapovednik/ContentAttachments/560286/e3e1fdf9-390f-4a08-9667-cda0d69bf1da.jpg')!important;
+}
+</style>
+
 </head>
 <body>
 <!-- Logo SVG Defs -->
@@ -871,8 +936,8 @@ letter-spacing:0!important;
     <div class="hero-content">
       <svg width="220" height="56" class="hero-logo" style="display:block;margin:0 auto 1.5rem"><use href="#logo-symbol-white"/></svg>
       <p class="hero-eyebrow">Кузбасс · Шерегеш · Алтай</p>
-      <h1 class="hero-title">Сибирь ждёт<br><span class="hl-green">тех, кто</span><br><span class="hl-blue">осмелится</span></h1>
-      <p class="hero-sub">Горные вершины, бирюзовые реки, шорские легенды и алтайские рассветы — собери свой маршрут мечты за пять минут.</p>
+      <h1 class="hero-title">Сибирь ближе,<br><span class="hl-green">чем ты</span><br><span class="hl-blue">думаешь</span></h1>
+      <p class="hero-sub">Горные вершины, бирюзовые реки, шорские легенды и алтайские рассветы —<br>собери свой маршрут мечты за пять минут.</p>
       <div class="hero-ctas">
         <button class="btn-primary" onclick="showPage('builder')">Собрать маршрут →</button>
         <button class="btn-outline" onclick="showPage('routes')">Готовые туры</button>
@@ -925,11 +990,25 @@ letter-spacing:0!important;
               </div>
             </div>
             <div class="form-group"><label>Путешественников</label>
-              <input type="number" id="travelers" min="1" max="30" value="2">
-            </div>
-            <div class="form-group"><label>Длительность</label>
-              <input type="number" id="duration" min="1" max="21" step="1" value="5">
-            </div>
+<div class="pill-group selector-group" id="traveler-buttons">
+<button type="button" class="pill active" onclick="setTraveler(1,this)">1</button>
+<button type="button" class="pill" onclick="setTraveler(2,this)">2</button>
+<button type="button" class="pill" onclick="setTraveler(3,this)">3</button>
+<button type="button" class="pill" onclick="setTraveler(4,this)">4</button>
+<button type="button" class="pill" onclick="customTraveler()">Свой вариант</button>
+</div>
+<input type="number" id="travelers" min="1" max="30" value="1" style="display:none">
+</div>
+<div class="form-group"><label>Длительность, дней</label>
+<div class="pill-group selector-group" id="duration-buttons">
+<button type="button" class="pill" onclick="setDuration(2,this)">2</button>
+<button type="button" class="pill" onclick="setDuration(3,this)">3</button>
+<button type="button" class="pill active" onclick="setDuration(5,this)">5</button>
+<button type="button" class="pill" onclick="setDuration(7,this)">7</button>
+<button type="button" class="pill" onclick="customDuration()">Свой вариант</button>
+</div>
+<input type="number" id="duration" min="1" max="21" step="1" value="5" style="display:none">
+</div>
             <div class="form-group"><label>Интересы</label>
               <div class="pill-group">
                 <button class="pill active" onclick="toggleMood(this,'nature')">🏔 Природа</button>
@@ -942,11 +1021,12 @@ letter-spacing:0!important;
               </div>
             </div>
             <div class="form-group"><label>Регион</label>
-              <select id="region-filter">
-                <option value="all">Оба региона</option>
-                <option value="kuzbass">Только Кузбасс / Шерегеш</option>
-                <option value="altai">Только Алтай</option>
-              </select>
+              <div class="pill-group selector-group" id="region-buttons">
+<button type="button" class="pill active" onclick="setRegion('all',this)">Кузбасс + Алтай</button>
+<button type="button" class="pill" onclick="setRegion('kuzbass',this)">Кузбасс</button>
+<button type="button" class="pill" onclick="setRegion('altai',this)">Алтай</button>
+</div>
+<input type="hidden" id="region-filter" value="all">
             </div>
             <div class="form-group"><label>Способ передвижения</label>
               <div class="transport-opts">
@@ -1033,7 +1113,7 @@ letter-spacing:0!important;
     <div class="container">
       <p class="section-eye">Готовые маршруты</p>
       <h2 class="section-title">Три маршрута,<br>которые меняют людей</h2>
-      <p class="section-sub">Продуманные сценарии для тех, кто хочет приехать и сразу попасть в самое сердце Сибири — без лишних поисков.</p>
+      <p class="section-sub">Продуманные сценарии для чем ты хочет приехать и сразу попасть в самое сердце Сибири — без лишних поисков.</p>
       <div class="ready-routes" id="ready-routes-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;margin-top:2rem"></div>
     </div>
   </section>
@@ -1686,14 +1766,14 @@ function renderBudget(){
   else if(currentTransport==='car') trnLabel='Аренда авто + топливо + парковки';
   else trnLabel='Трансферы с гидом (включены в тур)';
 
-  bc.innerHTML='<h3>Детальный бюджет · '+tr+' чел. · '+days+' дней</h3>'
+  bc.innerHTML='<h3>Бюджет · '+tr+' чел. · '+days+' дней</h3>'
     +'<div class="budget-rows">'
     +'<div class="budget-row"><span>Активности</span><strong>'+totAct.toLocaleString('ru')+' ₽</strong></div>'
     +'<div class="budget-row"><span>Транспорт</span><strong>'+trn.toLocaleString('ru')+' ₽</strong></div>'
     +'<div class="budget-row"><span>Проживание</span><strong>'+hot.toLocaleString('ru')+' ₽</strong></div>'
     +'<div class="budget-row"><span>Питание</span><strong>'+food.toLocaleString('ru')+' ₽</strong></div>'
     +'</div>'
-    +'<div class="budget-detail">'
+    +'<div class="budget-detail-wrapper"><div class="budget-detail-toggle">Показать детальный расчёт</div><div class="budget-detail">'
     +'<div class="budget-detail-title">Расшифровка активностей</div>'
     +actBreakdown
     +'</div>'
@@ -1709,7 +1789,7 @@ function renderBudget(){
     +'<div class="budget-detail" style="margin-top:.6rem">'
     +'<div class="budget-detail-title">Расшифровка питания</div>'
     +'<div class="budget-detail-row"><span>Завтрак, обед, ужин ('+days+' дней × '+(1500).toLocaleString('ru')+' ₽/чел.)</span><span>'+food.toLocaleString('ru')+' ₽</span></div>'
-    +'</div>'
+    +'</div></div>'
     +'<div class="budget-total"><span>Итого на всех ('+tr+' чел.)</span><strong>'+tot.toLocaleString('ru')+' ₽</strong></div>';
 }
 
@@ -2209,6 +2289,159 @@ if(typeof origReset==='function'){
    return origReset.apply(this,arguments);
  };
 }
+});
+</script>
+
+<script>
+function activateGroup(btn){
+btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+btn.classList.add('active');
+}
+function setTraveler(v,btn){document.getElementById('travelers').value=v;activateGroup(btn);}
+function setDuration(v,btn){document.getElementById('duration').value=v;activateGroup(btn);}
+function customTraveler(){const v=prompt('Введите количество участников');if(v){document.getElementById('travelers').value=v;}}
+function customDuration(){const v=prompt('Введите количество дней');if(v){document.getElementById('duration').value=v;}}
+document.addEventListener('DOMContentLoaded',()=>{
+document.querySelectorAll('.budget-detail').forEach(el=>{
+ if(el.dataset.fixed)return;
+ el.style.display='none';
+ const btn=document.createElement('button');
+ btn.type='button';
+ btn.className='btn-border';
+ btn.style.marginTop='12px';
+ btn.innerHTML='Показать детальный расчёт <i class="ti ti-chevron-down"></i>';
+ el.parentNode.insertBefore(btn,el);
+ btn.onclick=()=>{const open=el.style.display==='block';el.style.display=open?'none':'block';btn.innerHTML=open?'Показать детальный расчёт <i class="ti ti-chevron-down"></i>':'Скрыть детальный расчёт <i class="ti ti-chevron-up"></i>';};
+ el.dataset.fixed='1';
+});
+});
+</script>
+
+<script>
+function showTravelersInput(btn){
+ document.getElementById('travelers-custom').style.display='inline-block';
+ document.getElementById('travelers-custom').focus();
+}
+function showDurationInput(btn){
+ document.getElementById('duration-custom').style.display='inline-block';
+ document.getElementById('duration-custom').focus();
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ let tc=document.getElementById('travelers-custom');
+ if(tc) tc.addEventListener('input',e=>{document.getElementById('travelers').value=e.target.value||1;refreshRouteCalculations();});
+ let dc=document.getElementById('duration-custom');
+ if(dc) dc.addEventListener('input',e=>{document.getElementById('duration').value=e.target.value||5;refreshRouteCalculations();});
+});
+function setRegion(v,el){
+ document.getElementById('region-filter').value=v;
+ document.querySelectorAll('#region-buttons .pill').forEach(p=>p.classList.remove('active'));
+ el.classList.add('active');
+}
+</script>
+
+<style id="custom-option-inline-fix">
+.custom-inline-input{
+display:inline-block;
+width:90px;
+margin-left:8px;
+padding:8px 10px;
+border:2px solid #007348;
+border-radius:999px;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.pill').forEach(btn=>{
+    if(btn.textContent.trim().includes('Свой вариант')){
+      btn.addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+        this.classList.add('active');
+
+        let input=this.parentElement.querySelector('.custom-inline-input');
+        if(!input){
+          input=document.createElement('input');
+          input.type='number';
+          input.min='1';
+          input.placeholder='Введите';
+          input.className='custom-inline-input';
+          this.insertAdjacentElement('afterend',input);
+        }
+        input.style.display='inline-block';
+        input.focus();
+      },true);
+    }
+  });
+
+  // отключаем стандартные prompt/модалки
+  window.prompt=function(){ return null; };
+});
+</script>
+
+
+<style id="inline-custom-option-fix-v2">
+.custom-inline-input{
+display:inline-block;
+width:90px!important;
+height:40px;
+margin-left:8px;
+padding:0 10px;
+border:2px solid #007348;
+border-radius:999px;
+vertical-align:middle;
+}
+.custom-inline-input.hidden{display:none!important;}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+ document.querySelectorAll('.pill-group').forEach(group=>{
+   const pills=[...group.querySelectorAll('.pill')];
+   const customBtn=pills.find(p=>p.textContent.includes('Свой вариант'));
+   if(!customBtn) return;
+
+   let input=group.querySelector('.custom-inline-input');
+   if(!input){
+      input=document.createElement('input');
+      input.type='number';
+      input.placeholder='...';
+      input.className='custom-inline-input hidden';
+      customBtn.insertAdjacentElement('afterend',input);
+   }
+
+   pills.forEach(btn=>{
+      btn.addEventListener('click',function(){
+         if(btn===customBtn){
+            customBtn.classList.add('active');
+            input.classList.remove('hidden');
+            input.focus();
+         }else{
+            customBtn.classList.remove('active');
+            input.classList.add('hidden');
+            input.value='';
+         }
+      },true);
+   });
+ });
+});
+</script>
+
+<script>document.addEventListener('click',function(e){
+if(e.target.classList.contains('budget-detail-toggle')){
+const d=e.target.nextElementSibling;
+if(d){d.classList.toggle('open');e.target.textContent=d.classList.contains('open')?'Скрыть детальный расчёт':'Показать детальный расчёт';}
+}});
+</script>
+<script>
+function refreshRouteCalculations(){
+ if(typeof renderBudget==='function') renderBudget();
+ if(typeof renderRouteGrid==='function') renderRouteGrid();
+}
+document.addEventListener('input',function(e){
+ if(e.target && (e.target.id==='travelers' || e.target.id==='duration')){
+   refreshRouteCalculations();
+ }
 });
 </script>
 </body>
