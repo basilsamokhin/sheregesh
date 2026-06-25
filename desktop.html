@@ -213,12 +213,12 @@ section{padding:5rem 2rem}
 /* ROUTES */
 #routes-page{background:var(--surface2)}
 .ready-routes{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;margin-top:2rem}
-.ready-route{background:#fff;border-radius:var(--radius);overflow:hidden;border:1px solid var(--surface3)}
+.ready-route{background:#fff;border-radius:var(--radius);overflow:hidden;border:1px solid var(--surface3);display:flex;flex-direction:column;min-height:420px}
 .ready-route-header{padding:1.8rem;color:#fff}
 .ready-route-header .route-tag{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin-bottom:.4rem}
 .ready-route-header h3{font-family:"Unbounded",sans-serif;font-size:1.05rem;margin-bottom:.4rem;line-height:1.3}
 .ready-route-header p{font-size:13px;opacity:.82;line-height:1.55}
-.ready-route-body{padding:1.4rem}
+.ready-route-body{padding:1.4rem;display:flex;flex-direction:column;flex:1;justify-content:space-between}
 .route-stops{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem}
 .route-stops li{display:flex;align-items:flex-start;gap:.6rem;font-size:13px;color:var(--ink2)}
 .route-stops li i{color:var(--green-mid);font-size:15px;flex-shrink:0;margin-top:2px}
@@ -227,8 +227,7 @@ section{padding:5rem 2rem}
 .transport-tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
 .ttab{padding:6px 12px;border-radius:20px;border:1.5px solid #c8ddd4;background:#fff;font-size:12px;font-family:"Inter",sans-serif;cursor:pointer;transition:all .2s;color:var(--ink2);font-weight:500}
 .ttab.active{background:var(--green-dark);border-color:var(--green-dark);color:#fff;font-weight:600}
-.route-map-block{background:var(--surface2);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;font-size:13px;border:1px solid var(--surface3)}
-.route-map-block h4{font-weight:700;font-size:13px;margin-bottom:.6rem;color:var(--ink)}
+
 .route-leg{display:flex;align-items:center;gap:.5rem;padding:.35rem 0;border-bottom:1px solid var(--surface3);font-size:12px;color:var(--ink2)}
 .route-leg:last-child{border-bottom:none}
 .leg-dot{width:8px;height:8px;border-radius:50%;background:var(--green-mid);flex-shrink:0}
@@ -238,7 +237,7 @@ section{padding:5rem 2rem}
 .lt-car{background:#e0f5ea;color:#007348}
 .lt-taxi{background:#fff3cd;color:#856404}
 .lt-guide{background:#fde8e8;color:#c62828}
-.btn-go-tour{background:linear-gradient(135deg,var(--green-dark),var(--blue-mid));color:#fff;border:none;padding:11px 22px;border-radius:30px;font-size:13px;font-family:"Inter",sans-serif;font-weight:700;cursor:pointer;width:100%;margin-top:.5rem}
+.btn-go-tour{background:linear-gradient(135deg,var(--green-dark),var(--blue-mid));color:#fff;border:none;padding:11px 22px;border-radius:30px;font-size:13px;font-family:"Inter",sans-serif;font-weight:700;cursor:pointer;width:100%;margin-top:auto}
 
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:200;align-items:center;justify-content:center;padding:1rem}
@@ -857,7 +856,18 @@ background-image:url('https://www.altzapovednik.ru/AltZapovednik/ContentAttachme
 }
 </style>
 
+
+<style id="route-card-height-fix">
+@media (min-width:769px){
+.ready-routes{align-items:stretch!important;}
+.ready-route{min-height:420px!important;height:420px!important;}
+.ready-route-body{padding:1.1rem!important;}
+.route-stops{margin-bottom:.8rem!important;}
+.route-info{margin-bottom:.8rem!important;}
+}
+</style>
 </head>
+
 <body>
 <!-- Logo SVG Defs -->
 <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
@@ -2042,46 +2052,14 @@ function renderReadyRoutes(){
     html += '<span><i class="ti ti-calendar"></i>'+r.info.season+'</span>';
     html += '</div>';
     html += '<div id="legs-'+r.id+'" class="route-legs-block"></div>';
-    html += '<div class="transport-tabs">';
-    html += '<button class="ttab active" onclick="showLegs(' + "'" + r.id + "'" + ',\'bus\',this)">Автобус</button>';
-    html += '<button class="ttab" onclick="showLegs(' + "'" + r.id + "'" + ',\'taxi\',this)">Такси</button>';
-    html += '<button class="ttab" onclick="showLegs(' + "'" + r.id + "'" + ',\'car\',this)">Машина</button>';
-    html += '<button class="ttab" onclick="showLegs(' + "'" + r.id + "'" + ',\'guide\',this)">С гидом</button>';
-    html += '</div>';
-    html += '<button class="btn-go-tour" onclick="openTourModal(' + "'" + r.id + "'" + ')">✈️ Отправить в путешествие</button>';
+    html += '<button class="btn-go-tour" onclick="openTourModal(' + "'" + r.id + "'" + ')">✈️ Посмотреть программу тура</button>';
     html += '</div></div>';
   }
   grid.innerHTML = html;
   for(var i=0;i<READY_ROUTES.length;i++) showLegs(READY_ROUTES[i].id,'bus',null);
 }
 
-function showLegs(routeId,transport,btn){
-  if(btn){
-    var tabs=btn.closest('.ready-route-body').querySelectorAll('.ttab');
-    tabs.forEach(function(t){t.classList.remove('active');});
-    btn.classList.add('active');
-  }
-  var r=READY_ROUTES.find(function(x){return x.id===routeId;});
-  if(!r)return;
-  var legs=r.legs[transport]||[];
-  var block=document.getElementById('legs-'+routeId);
-  if(!block)return;
-  var icons={bus:'lt-bus',taxi:'lt-taxi',car:'lt-car',guide:'lt-guide'};
-  var labels={bus:'Автобус',taxi:'Такси',car:'Машина',guide:'С гидом'};
-  var cls=icons[transport]||'lt-bus';
-  var lbl=labels[transport]||transport;
-  var html='<div style="background:var(--surface2);border-radius:8px;padding:.8rem;margin-bottom:.8rem;border:1px solid var(--surface3)">';
-  html+='<div style="font-weight:700;font-size:12px;margin-bottom:.5rem;color:var(--ink)">🗺 Как добраться ('+lbl+')</div>';
-  for(var i=0;i<legs.length;i++){
-    html+='<div style="display:flex;align-items:center;gap:.5rem;padding:.3rem 0;border-bottom:1px solid var(--surface3);font-size:12px;color:var(--ink2)">';
-    html+='<span style="width:8px;height:8px;border-radius:50%;background:var(--green-mid);display:inline-block;flex-shrink:0"></span>';
-    html+='<span>'+legs[i]+'</span>';
-    html+='<span style="margin-left:auto;font-size:11px;font-weight:600;padding:2px 7px;border-radius:12px" class="'+cls+'">'+lbl+'</span>';
-    html+='</div>';
-  }
-  html+='</div>';
-  block.innerHTML=html;
-}
+function showLegs(routeId,transport,btn){ return; }
 
 var currentTourRoute=null;
 function openTourModal(routeId){
@@ -2446,3 +2424,5 @@ document.addEventListener('input',function(e){
 </script>
 </body>
 </html>
+
+<style>.route-map-block,.transport-tabs{display:none!important}</style>
